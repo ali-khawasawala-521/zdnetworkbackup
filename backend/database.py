@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from passlib.context import CryptContext
 
@@ -5,7 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
-DATABASE_URL = "sqlite:////home/khawasawala/Documents/Web Projects/Open Source/ZDNetworkBackup/backend/data.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DB_PATH = os.path.join(BASE_DIR, "data.db")
+DATABASE_URL = f"sqlite:///{DATA_DB_PATH}"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
