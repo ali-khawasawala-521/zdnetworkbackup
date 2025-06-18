@@ -6,9 +6,8 @@ import {
   DialogDescription,
   DialogTitle,
   DialogHeader,
-  DialogFooter,
 } from '@/components/ui/dialog'
-import { formatLocaleDate } from '@/lib/helper'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const props = defineProps<{
   show: boolean
@@ -31,7 +30,9 @@ const showModal = useVModel(props, 'show', emit)
           Configuration Backup for {{ backup.hostname }} <{{ backup.ip_address }}>
         </DialogDescription>
       </DialogHeader>
-      <pre>{{ backup.config }}</pre>
+      <ScrollArea class="w-full h-[600px]">
+        <p>{{ backup.config }}</p>
+      </ScrollArea>
     </DialogContent>
   </Dialog>
 </template>

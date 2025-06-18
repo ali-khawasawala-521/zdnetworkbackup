@@ -1,4 +1,5 @@
 from netmiko import ConnectHandler
+import re
 
 device_backup_commands = {
     "aruba_os": "show running-config",
@@ -34,7 +35,6 @@ def get_netmiko_connection(device):
         "device_type": device["device_type"]
     }
 
-    print(inner_device)
     return ConnectHandler(**inner_device)
 
 def get_device_backup(connection, device_type):
@@ -49,15 +49,16 @@ def get_device_backup(connection, device_type):
 
 # ---- Get Device Hostname ----
 def get_device_hostname(connection, device_type):
-    # if device_type == "aruba_os":
-    #     command = "show running-config"
-    #     out = connection.send_command_timing(command)
-    #     if "Do you want to show sensitive information" in out:
-    #         out = connection.send_command_timing("y")
-    #     host = re.search(r'^hostname\s+(\S+)', out, re.MULTILINE)
-    #     if host:
-    #         hostname = host.group(1)
-    #         return hostname
+    # Commen out first if block if not needed
+    if device_type == "aruba_os":
+        command = "show running-config"
+        out = connection.send_command_timing(command)
+        if "Do you want to show sensitive information" in out:
+            out = connection.send_command_timing("y")
+        host = re.search(r'^hostname\s+(\S+)', out, re.MULTILINE)
+        if host:
+            hostname = host.group(1)
+            return hostname
     if device_type in device_hostname_commands.keys():
         command = device_hostname_commands[device_type]['cmd']
         index = device_hostname_commands[device_type]['index']

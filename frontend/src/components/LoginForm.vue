@@ -63,8 +63,8 @@ const onSubmit = async (formData: any) => {
               />
             </div>
             <Button type="submit" class="w-full" :disabled="isLoading">
-              <span v-if="isLoading">
-                <Loader2 class="w-4 h-4 mr-2 animate-spin" />
+              <span v-if="isLoading" class="flex items-center justify-center gap-2">
+                <Loader2 class="animate-spin" />
                 Please wait
               </span>
               <span v-else>Login</span>

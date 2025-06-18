@@ -4,7 +4,7 @@ APP_MODULE="main:app"
 BACKEND_DIR="backend"
 FRONTEND_DIR="frontend"
 HOST="0.0.0.0"
-PORT="6666"
+PORT="8090"
 DEV=false
 
 # Parse dev argument for backend and frontend
@@ -33,7 +33,7 @@ if [ "$DEV" = true ]; then
     npm run dev &
     FRONTEND_PID=$!
 else
-    npm run build && npm run preview
+    npm run build && npm run preview -- --host
 fi
 
 # Wait for both processes to finish

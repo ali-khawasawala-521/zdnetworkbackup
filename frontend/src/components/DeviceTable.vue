@@ -22,7 +22,7 @@ type DeviceFormWithId = DeviceForm & { id: string }
 
 const router = useRouter()
 
-const loadingBackup = ref<string | null>(null)
+const loadingBackup = ref<number | null>(null)
 const deviceModal = ref<boolean>(false)
 const alertModal = ref<boolean>(false)
 const devices = ref<Device[]>([])
@@ -35,7 +35,7 @@ const handleEditDevice = async (device: Device) => {
 
 const handleGetBackup = async (device: Device) => {
   try {
-    loadingBackup.value = device.id
+    loadingBackup.value = Number(device.id)
     await addBackup(device.id)
   } finally {
     loadingBackup.value = null
@@ -116,9 +116,10 @@ onMounted(async () => {
                 <Button
                   size="sm"
                   @click="handleGetBackup(device)"
-                  :disabled="loadingBackup === device.id"
+                  :disabled="loadingBackup === Number(device.id)"
+                  class="flex items-center gap-2"
                 >
-                  <Loader2 v-if="loadingBackup === device.id" class="mr-2 animate-spin" />
+                  <Loader2 v-if="loadingBackup === Number(device.id)" class="animate-spin" />
                   <span>Get Backup</span>
                 </Button>
                 <Button size="sm" @click="handleShowDeviceBackups(device)"

@@ -71,7 +71,7 @@ onMounted(() => {
       <div class="flex flex-col">
         <Label for="password">Password</Label>
         <FormKit
-          type="text"
+          type="password"
           name="password"
           :validation="mode === 'add' ? 'required' : ''"
           validation-visibility="dirty"
@@ -81,7 +81,7 @@ onMounted(() => {
       <div class="flex flex-col">
         <Label for="enable_password">Secret</Label>
         <FormKit
-          type="text"
+          type="password"
           name="enable_password"
           :help="
             mode === 'edit' ? 'Leave blank if you do not want to change the enable password' : ''
@@ -101,8 +101,8 @@ onMounted(() => {
         />
       </div>
       <Button type="submit" class="w-full" :disabled="isLoading">
-        <span v-if="isLoading">
-          <Loader2 class="w-4 h-4 mr-2 animate-spin" />
+        <span v-if="isLoading" class="flex justify-center items-center gap-2">
+          <Loader2 class="animate-spin" />
           Please wait
         </span>
         <span v-else>{{ mode === 'add' ? 'Add' : 'Update' }} Device</span>
