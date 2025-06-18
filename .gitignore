@@ -10,7 +10,7 @@ Thumbs.db
 # === PYTHON / BACKEND ===
 
 # Byte-compiled / cache
-backend/__pycache__/
+backend/**/__pycache__/
 
 # Virtual environments
 backend/venv/

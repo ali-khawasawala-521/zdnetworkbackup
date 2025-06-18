@@ -3,8 +3,8 @@
 APP_MODULE="main:app"
 BACKEND_DIR="backend"
 FRONTEND_DIR="frontend"
-HOST="localhost"
-PORT="6565"
+HOST="0.0.0.0"
+PORT="6666"
 DEV=false
 
 # Parse dev argument for backend and frontend
