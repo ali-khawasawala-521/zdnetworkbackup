@@ -1,4 +1,6 @@
-const baseUrl = 'http://localhost:6565/auth'
+import { apiBaseUrl } from '@/lib/constants'
+
+const baseUrl = `${apiBaseUrl}/auth`
 
 export const isAuthenticated = async () => {
   try {

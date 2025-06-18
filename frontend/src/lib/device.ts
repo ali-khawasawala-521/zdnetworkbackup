@@ -1,6 +1,7 @@
 import type { DeviceForm } from '@/types/device'
+import { apiBaseUrl } from '@/lib/constants'
 
-const baseUrl = 'http://localhost:6565/device'
+const baseUrl = `${apiBaseUrl}/device`
 
 export const device_types = [
   { value: 'aruba_os', label: 'Aruba' },

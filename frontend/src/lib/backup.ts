@@ -1,4 +1,6 @@
-const baseUrl = 'http://localhost:6565/backup/'
+import { apiBaseUrl } from '@/lib/constants'
+
+const baseUrl = `${apiBaseUrl}/backup/`
 
 import type { Backup } from '@/types/backup'
 
