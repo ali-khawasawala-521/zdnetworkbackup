@@ -1,0 +1,53 @@
+# === COMMON ===
+*.log
+*.db
+*.sqlite3
+*.env
+*.env.*
+.DS_Store
+Thumbs.db
+
+# === PYTHON / BACKEND ===
+
+# Byte-compiled / cache
+backend/__pycache__/
+
+# Virtual environments
+backend/venv/
+backend/.env/
+backend/.venv/
+backend/Pipfile.lock
+backend/poetry.lock
+
+# Build output
+build/
+dist/
+*.egg-info/
+
+# PyInstaller
+*.spec
+
+# === FRONTEND (Vue 3) ===
+
+# Node.js
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+frontend/dist/
+frontend/.vitepress/dist/
+frontend/.output/
+frontend/.temp/
+frontend/.cache/
+
+# Editor settings
+.vscode/
+.idea/
+
+# === OS / Misc ===
+*.swp
+*.bak
+*~
