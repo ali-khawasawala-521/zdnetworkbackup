@@ -5,6 +5,7 @@ BACKEND_DIR="backend"
 FRONTEND_DIR="frontend"
 HOST="0.0.0.0"
 PORT="8090"
+VUE_PORT="8099"
 DEV=false
 
 # Parse dev argument for backend and frontend
@@ -30,10 +31,10 @@ echo "Starting Frontend on http://${HOST}:${VUE_PORT} ..."
 cd "$FRONTEND_DIR" || { echo "Frontend directory not found!"; kill $BACKEND_PID; exit 1; }
 
 if [ "$DEV" = true ]; then
-    npm run dev &
+    npm run dev -- --host --port "$VUE_PORT" &
     FRONTEND_PID=$!
 else
-    npm run build && npm run preview -- --host
+    npm run build && npm run preview -- --host --port "$VUE_PORT"
 fi
 
 # Wait for both processes to finish

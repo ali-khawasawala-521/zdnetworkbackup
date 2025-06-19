@@ -147,15 +147,14 @@ def create_backup(db: Session, device_id: int):
     if not db_device:
         return None
 
-    device_data = db_device.dict()
-    connection = get_netmiko_connection(device_data)
-    config = get_device_backup(connection, device_data.device_type)
-    hostname = get_device_hostname(connection, device_data.device_type)
+    connection = get_netmiko_connection(db_device.__dict__)
+    config = get_device_backup(connection, db_device.device_type)
+    hostname = get_device_hostname(connection, db_device.device_type)
 
     db_backup = models.Backup(
-        device_id=device_data.id,
-        device_type=device_data.device_type,
-        ip_address=device_data.ip_address,
+        device_id=db_device.id,
+        device_type=db_device.device_type,
+        ip_address=db_device.ip_address,
         hostname=hostname,
         config=config,
     )
