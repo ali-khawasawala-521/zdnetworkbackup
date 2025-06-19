@@ -30,6 +30,10 @@ class DeviceOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True, extra=Extra.allow)
 
+class DeviceResponse(BaseModel):
+    message: str
+    device: DeviceOut
+
 # Backup Schemas
 class BackupBase(BaseModel):
     id: int
@@ -44,6 +48,10 @@ class BackupCreate(BackupBase):
 
 class BackupOut(BackupBase):
     pass
+
+class BackupResponse(BaseModel):
+    message: str
+    backup: BackupOut
 
 class BackupCFGOut(BackupBase):
     config: str

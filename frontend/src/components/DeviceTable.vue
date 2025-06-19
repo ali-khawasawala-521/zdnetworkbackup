@@ -47,6 +47,7 @@ const handleAddBackup = async (device: Device) => {
   try {
     loadingBackup.value = Number(device.id)
     await addBackup(device.id)
+    await handleLoadDevices()
   } catch (error) {
     console.error(`Error adding backup for device ${device.id}:`, error)
   } finally {

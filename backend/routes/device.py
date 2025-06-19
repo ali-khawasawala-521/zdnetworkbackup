@@ -8,7 +8,7 @@ router = APIRouter()
 
 router = APIRouter(prefix="/device", tags=["Devices"])
 
-@router.post("/", response_model=schemas.DeviceOut)
+@router.post("/", response_model=schemas.DeviceResponse)
 def create_device(
     device: schemas.DeviceCreate,
     db: Session = Depends(get_db),
@@ -20,7 +20,7 @@ def create_device(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/{device_id}/backup", response_model=schemas.BackupOut)
+@router.post("/{device_id}/backup", response_model=schemas.BackupResponse)
 def create_backup(
     device_id: int,
     db: Session = Depends(get_db),

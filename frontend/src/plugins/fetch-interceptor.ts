@@ -7,7 +7,7 @@ const fetchInterceptor = {
   install(app: App) {
     const originalFetch = window.fetch
 
-    window.fetch = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
+    window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
       const method = init?.method?.toUpperCase() || 'GET'
 
       // Intercept only mutation methods
