@@ -51,4 +51,4 @@ def delete_backup(backup_id: int, db: Session = Depends(get_db), user: int = Dep
     deleted = crud.delete_backup(db, backup_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Backup not found")
-    return {"message": f"Backup {backup_id} deleted"}
+    return {"message": f"Backup with id {backup_id} deleted"}

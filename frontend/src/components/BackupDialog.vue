@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogHeader,
 } from '@/components/ui/dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 const props = defineProps<{
   show: boolean
@@ -23,16 +22,14 @@ const showModal = useVModel(props, 'show', emit)
 
 <template>
   <Dialog v-model:open="showModal">
-    <DialogContent class="sm:max-w-[425px]">
+    <DialogContent class="sm:max-w-[800px]">
       <DialogHeader>
         <DialogTitle>Backup</DialogTitle>
         <DialogDescription>
           Configuration Backup for {{ backup.hostname }} <{{ backup.ip_address }}>
         </DialogDescription>
       </DialogHeader>
-      <ScrollArea class="w-full h-[600px]">
-        <p>{{ backup.config }}</p>
-      </ScrollArea>
+      <pre class="overflow-auto max-h-[600px]">{{ backup.config }}</pre>
     </DialogContent>
   </Dialog>
 </template>

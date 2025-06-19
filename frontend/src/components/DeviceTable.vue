@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Device, DeviceForm } from '@/types/device'
 
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Loader2 } from 'lucide-vue-next'
 import {
@@ -20,27 +20,38 @@ import { formatLocaleDate } from '@/lib/helper'
 
 type DeviceFormWithId = DeviceForm & { id: string }
 
+const { devices = [] } = defineProps<{ devices: Device[] }>()
+
+const emit = defineEmits<{
+  (e: 'refresh:devices'): void
+}>()
+
 const router = useRouter()
 
 const loadingBackup = ref<number | null>(null)
 const deviceModal = ref<boolean>(false)
 const alertModal = ref<boolean>(false)
-const devices = ref<Device[]>([])
 const selectedDevice = ref<DeviceFormWithId | null>(null)
+
+const handleAddDevice = async () => {
+  selectedDevice.value = null
+  deviceModal.value = true
+}
 
 const handleEditDevice = async (device: Device) => {
   selectedDevice.value = device as unknown as DeviceFormWithId
   deviceModal.value = true
 }
 
-const handleGetBackup = async (device: Device) => {
+const handleAddBackup = async (device: Device) => {
   try {
     loadingBackup.value = Number(device.id)
     await addBackup(device.id)
+  } catch (error) {
+    console.error(`Error adding backup for device ${device.id}:`, error)
   } finally {
     loadingBackup.value = null
   }
-  // Show success message or update UI
 }
 
 const handleShowDeviceBackups = async (device: Device) => {
@@ -59,7 +70,7 @@ const handleDeleteDevice = async (device: Device) => {
 }
 
 const handleLoadDevices = async () => {
-  devices.value = await getDeviceList()
+  emit('refresh:devices')
 }
 
 const handleDevice = async (error?: any) => {
@@ -76,17 +87,13 @@ watch(deviceModal, () => {
     selectedDevice.value = null
   }
 })
-
-onMounted(async () => {
-  await handleLoadDevices()
-})
 </script>
 
 <template>
   <Card>
     <CardHeader class="flex justify-between items-center gap-4">
       <CardTitle>Devices</CardTitle>
-      <Button @click="deviceModal = true"> Add Device </Button>
+      <Button @click="handleAddDevice"> Add Device </Button>
     </CardHeader>
     <CardContent>
       <Table>
@@ -115,12 +122,12 @@ onMounted(async () => {
               <div class="flex items-center justify-end gap-2">
                 <Button
                   size="sm"
-                  @click="handleGetBackup(device)"
+                  @click="handleAddBackup(device)"
                   :disabled="loadingBackup === Number(device.id)"
                   class="flex items-center gap-2"
                 >
                   <Loader2 v-if="loadingBackup === Number(device.id)" class="animate-spin" />
-                  <span>Get Backup</span>
+                  <span>Add Backup</span>
                 </Button>
                 <Button size="sm" @click="handleShowDeviceBackups(device)"
                   >Show Devices Backups</Button

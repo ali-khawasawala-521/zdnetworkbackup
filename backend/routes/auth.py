@@ -48,7 +48,7 @@ def logout_user(response: Response, request: Request, db: Session = Depends(get_
     if token:
         crud.delete_session(db, token)
     response.delete_cookie("session_token")
-    return {"message": "Logged out"}
+    return {"message": "Logged out successfully"}
 
 @router.get("/verify-user")
 def verify_user(request: Request, db: Session = Depends(get_db)):

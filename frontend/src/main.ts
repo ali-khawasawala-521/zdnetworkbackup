@@ -7,10 +7,12 @@ import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { genesisIcons } from '@formkit/icons'
 import { rootClasses } from '../formkit.theme'
 import { Input, Select } from './components/formkit'
+import fetchInterceptor from './plugins/fetch-interceptor'
 
 const app = createApp(App)
 
 app.use(router)
+app.use(fetchInterceptor)
 app.use(
   plugin,
   defaultConfig({

@@ -15,5 +15,5 @@ const route = useRoute()
     </main>
     <Footer v-if="route.path !== '/login'" />
   </div>
-  <Toaster />
+  <Toaster richColors position="top-right" />
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Backup } from '@/types/backup'
 
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import {
   Table,
   TableBody,
@@ -14,13 +14,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { AlertDialog, BackupDialog } from '@/components'
 import { get_device_type } from '@/lib/device'
-import { getBackup, getBackupList, deleteBackup, downloadBackup } from '@/lib/backup'
+import { getBackup, deleteBackup, downloadBackup } from '@/lib/backup'
 import { formatLocaleDate } from '@/lib/helper'
+
+const { backups = [] } = defineProps<{ backups: Backup[] }>()
+
+const emit = defineEmits<{
+  (e: 'refresh:devices'): void
+}>()
 
 const alertModal = ref<boolean>(false)
 const showBackupModal = ref<boolean>(false)
 const backup = ref<Backup | null>(null)
-const backups = ref<Backup[]>([])
 const selectedBackup = ref<Backup | null>(null)
 
 const handleShowBackup = async (bck: Backup) => {
@@ -48,10 +53,8 @@ const handleDeleteBackup = async (backup: Backup) => {
 }
 
 const handleLoadBackups = async () => {
-  backups.value = await getBackupList()
+  emit('refresh:devices')
 }
-
-onMounted(handleLoadBackups)
 </script>
 
 <template>
@@ -93,7 +96,7 @@ onMounted(handleLoadBackups)
   <AlertDialog
     v-model:open="alertModal"
     title="Are you sure?"
-    :description="`It will remove your backup for ${selectedBackup?.hostname} created at ${selectedBackup?.created_at}. This action cannot be undone.`"
+    :description="`It will remove your backup for ${selectedBackup?.hostname} created at ${formatLocaleDate(selectedBackup?.created_at)}. This action cannot be undone.`"
     @on:ok="handleDeleteBackup(selectedBackup as Backup)"
   />
   <BackupDialog v-model:show="showBackupModal" :backup="backup" />
