@@ -1,16 +1,9 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { DarkModeToggle } from '@/components'
+import { DarkModeToggle, UserDropdown } from '@/components'
 import { Button } from '@/components/ui/button'
 import { logout } from '@/lib/auth'
 import Logo from '@/assets/logo.svg'
-
-const router = useRouter()
-
-const logoutUser = async () => {
-  await logout()
-  await router.push('/login')
-}
 </script>
 
 <template>
@@ -29,7 +22,7 @@ const logoutUser = async () => {
         </router-link>
       </nav>
       <DarkModeToggle />
-      <Button variant="outline" @click="logoutUser"> Logout</Button>
+      <UserDropdown />
     </div>
   </header>
 </template>

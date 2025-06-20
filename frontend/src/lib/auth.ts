@@ -33,6 +33,7 @@ export const login = async (payload: { email: string; password: string }) => {
     if (!response.ok) throw new Error('Login failed')
 
     const data = await response.json()
+    localStorage.setItem('user', JSON.stringify(data))
     return data
   } catch (error) {
     console.error('Login error:', error)
@@ -48,10 +49,31 @@ export const logout = async () => {
     })
 
     if (!response.ok) throw new Error('Logout failed')
-
+    localStorage.removeItem('user')
     return true
   } catch (error) {
     console.error('Logout error:', error)
+    throw error
+  }
+}
+
+export const register = async (payload: { email: string; password: string }) => {
+  try {
+    const response = await fetch(`${baseUrl}/register`, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) throw new Error('Registration failed')
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Registration error:', error)
     throw error
   }
 }

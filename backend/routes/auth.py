@@ -7,7 +7,7 @@ router = APIRouter()
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-class LoginRequest(BaseModel):
+class AuthRequest(BaseModel):
     email: str
     password: str
 
@@ -18,9 +18,29 @@ def get_db():
     finally:
         db.close()
 
+@router.post("/register")
+def register_user(
+    payload: AuthRequest,
+    response: Response,
+    db: Session = Depends(get_db)
+):
+    try:
+        # Check if user already exists
+        user = crud.get_user(db, payload.email)
+        if user:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists")
+
+        # Create new user
+        crud.create_user(db, payload.email, payload.password)
+
+        # Return success response
+        return {"message": f"User with email {payload.email} registered successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
 @router.post("/login")
 def login_user(
-    payload: LoginRequest,
+    payload: AuthRequest,
     response: Response,
     db: Session = Depends(get_db)
 ):
@@ -40,7 +60,7 @@ def login_user(
         secure=False  # use False only for localhost testing
     )
 
-    return {"message": "Login successful", "user_id": user.id}
+    return {"message": "Login successful", "user_id": user.id, "user_email": user.email}
 
 @router.post("/logout")
 def logout_user(response: Response, request: Request, db: Session = Depends(get_db)):

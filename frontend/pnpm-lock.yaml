@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@formkit/core':
+        specifier: ^1.6.9
+        version: 1.6.9
       '@formkit/icons':
         specifier: ^1.6.9
         version: 1.6.9

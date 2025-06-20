@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=your_username_here
 WorkingDirectory=/full/path/to/your/project
-ExecStart=/full/path/to/your/project/start.sh
+ExecStart=/bin/bash start.sh
 Restart=always
 RestartSec=5
 Environment=PATH=/usr/bin:/usr/local/bin:/bin

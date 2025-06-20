@@ -53,7 +53,7 @@ def get_session(db: Session, token: str):
     if session:
         is_active = datetime.datetime.utcnow() < session.expires_at
         user = get_user_by_id(db, session.user_id)
-        if (user and is_active):
+        if (user and bool(is_active)):
             return session
 
     raise HTTPException(status_code=401, detail="Unauthorized")
