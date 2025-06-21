@@ -33,7 +33,7 @@ export const login = async (payload: { email: string; password: string }) => {
     if (!response.ok) throw new Error('Login failed')
 
     const data = await response.json()
-    localStorage.setItem('user', JSON.stringify(data))
+    localStorage.setItem('user', JSON.stringify(data?.user))
     return data
   } catch (error) {
     console.error('Login error:', error)

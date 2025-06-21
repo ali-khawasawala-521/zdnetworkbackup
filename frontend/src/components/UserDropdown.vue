@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { User } from '@/types/user'
+
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
@@ -20,7 +22,7 @@ import { scheduler_status, start_scheduler, stop_scheduler } from '@/lib/schedul
 const router = useRouter()
 
 const showUserModal = ref<boolean>(false)
-const user = ref<object | null>(JSON.parse(localStorage.getItem('user') || '{}'))
+const user = ref<User | null>(JSON.parse(localStorage.getItem('user') || '{}'))
 const schedulerStatus = ref<string | null>(null)
 
 const logoutUser = async () => {
@@ -49,7 +51,7 @@ onMounted(async () => {
     <DropdownMenuTrigger as-child>
       <Button variant="outline">
         <Icon icon="radix-icons:person" class="h-[1.2rem] w-[1.2rem]" />
-        {{ user?.user_email || '' }}
+        {{ user?.email || '' }}
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">

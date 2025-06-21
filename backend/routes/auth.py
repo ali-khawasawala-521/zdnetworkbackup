@@ -60,7 +60,7 @@ def login_user(
         secure=False  # use False only for localhost testing
     )
 
-    return {"message": "Login successful", "user_id": user.id, "user_email": user.email}
+    return {"message": "Login successful", "user": { "id": user.id, "email": user.email }}
 
 @router.post("/logout")
 def logout_user(response: Response, request: Request, db: Session = Depends(get_db)):
