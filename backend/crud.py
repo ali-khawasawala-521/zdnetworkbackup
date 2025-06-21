@@ -117,8 +117,11 @@ def create_device_with_auto_backup(db: Session, device: schemas.DeviceCreate):
 def get_device(db: Session, device_id: int):
     return db.query(models.Device).filter(models.Device.id == device_id).first()
 
-def get_devices(db: Session, skip: int = 0, limit: int = 100):
-    devices = db.query(models.Device).offset(skip).limit(limit).all()
+def get_devices(db: Session, skip: int = 0, limit: int = -1):
+    if limit == -1:
+        devices = db.query(models.Device).all()
+    else:
+        devices = db.query(models.Device).offset(skip).limit(limit).all()
     for device in devices:
         device.total_backups = db.query(models.Backup).filter(models.Backup.device_id == device.id).count()
     return devices

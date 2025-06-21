@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { Button } from '@/components/ui/button'
@@ -9,19 +9,39 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CreateUserDialog } from '@/components'
 import { logout } from '@/lib/auth'
+import { scheduler_status, start_scheduler, stop_scheduler } from '@/lib/scheduler'
 
 const router = useRouter()
 
 const showUserModal = ref<boolean>(false)
 const user = ref<object | null>(JSON.parse(localStorage.getItem('user') || '{}'))
+const schedulerStatus = ref<string | null>(null)
 
 const logoutUser = async () => {
   await logout()
   await router.push('/login')
 }
+
+const handleStartScheduler = async () => {
+  await start_scheduler()
+  schedulerStatus.value = 'active'
+}
+
+const handleStopScheduler = async () => {
+  await stop_scheduler()
+  schedulerStatus.value = 'inactive'
+}
+
+onMounted(async () => {
+  const scheduler = await scheduler_status()
+  schedulerStatus.value = scheduler.active ? 'active' : 'inactive'
+})
 </script>
 
 <template>
@@ -36,9 +56,28 @@ const logoutUser = async () => {
       <DropdownMenuItem @click="showUserModal = true">
         <Icon icon="radix-icons:plus" /> Create New User
       </DropdownMenuItem>
-      <DropdownMenuItem @click="() => {}">
-        <Icon icon="radix-icons:clock" /> Schedule Backup
-      </DropdownMenuItem>
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>
+          <div class="flex items-center justify-center gap-3">
+            <Icon icon="radix-icons:clock" />
+            <span>Schedule Backup</span>
+          </div>
+        </DropdownMenuSubTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem
+              v-if="schedulerStatus === 'active'"
+              variant="destructive"
+              @click="handleStopScheduler"
+            >
+              <span>Stop</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem v-else @click="handleStartScheduler">
+              <span>Start</span>
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuPortal>
+      </DropdownMenuSub>
       <Separator />
       <DropdownMenuItem variant="destructive" @click="logoutUser">
         <Icon icon="radix-icons:exit" /> Logout

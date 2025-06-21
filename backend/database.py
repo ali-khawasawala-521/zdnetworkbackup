@@ -1,10 +1,10 @@
 import os
 import sqlite3
 from passlib.context import CryptContext
-
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from contextlib import contextmanager
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DB_PATH = os.path.join(BASE_DIR, "data.db")
@@ -22,6 +22,15 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@contextmanager
+def get_context_db():
+    db: Session = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 def get_user(email: str):
     conn = sqlite3.connect("users.db")

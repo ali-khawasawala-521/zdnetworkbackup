@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from typing import List
+from io import StringIO
 from backend import crud, schemas, models
 from backend.database import get_db
-from io import StringIO
+from backend.logger import logger
 
 router = APIRouter(prefix="/backup", tags=["Backups"])
 
@@ -30,6 +31,7 @@ def download_config_file(
     backup = db.query(models.Backup).filter(models.Backup.id == backup_id).first()
 
     if not backup:
+        logger.error(f"Backup with id {backup_id} not found")
         raise HTTPException(status_code=404, detail="Backup not found")
 
     # Prepare file-like object in memory
@@ -50,5 +52,6 @@ def download_config_file(
 def delete_backup(backup_id: int, db: Session = Depends(get_db), user: int = Depends(crud.require_session_user)):
     deleted = crud.delete_backup(db, backup_id)
     if not deleted:
+        logger.error(f"Backup with id {backup_id} not found")
         raise HTTPException(status_code=404, detail="Backup not found")
     return {"message": f"Backup with id {backup_id} deleted"}
